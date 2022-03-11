@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed = 10f;
     [SerializeField] float xRange = 1.8f;
     SpriteRenderer playerColor;
+    [SerializeField] GameHandler gameHandler;   // Game handler reference
+    [SerializeField] Score score;               // Score reference
 
     void Start()
     {
@@ -16,6 +18,7 @@ public class PlayerController : MonoBehaviour
         // sprite.color = new Color (Red, Green, Blue, Alpha); // Choose between 1 and 0. Where, 1 is enabled, 0 disabled
         playerColor = GetComponent<SpriteRenderer>();
         playerColor.color = new Color(0, 1, 0, 1);
+ 
     }
 
     void Update()
@@ -25,25 +28,35 @@ public class PlayerController : MonoBehaviour
 
     private void MovementX()
     {
+        // Player movement within X-Axis
         float xControl = CrossPlatformInputManager.GetAxis("Horizontal");
         float xOffset = speed * xControl * Time.deltaTime;
         float xRaw = transform.position.x + xOffset;
-        float xPosClamp = Mathf.Clamp(xRaw, -xRange, xRange);
-        transform.position = new Vector3(xPosClamp, 0f, 0f);
+        float xPosClamp = Mathf.Clamp(xRaw, -xRange, xRange);   // player limitation movement on x-axis
+        transform.position = new Vector3(xPosClamp, 0f, 0f);    // execute the movement
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Get the Sprite color of the obstacle
         SpriteRenderer obstacleColor;
         obstacleColor = collision.GetComponent<SpriteRenderer>();
 
+        // If player and obstacle has the same color green then add score
         if (obstacleColor.color == playerColor.color)
         {
-            Debug.Log("Collided with bonus");
+            score = score.GetComponent<Score>();
+            score.UpdateScore();
+            Destroy(collision.gameObject);
         }
+
+        // Inform game handler to stop the game and Destroy player and the obstacle collided
         else
         {
-            Debug.Log("Collided with obstacle");
+            gameHandler = gameHandler.GetComponent<GameHandler>();
+            gameHandler.GameIsPlaying(false);
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
     }
 }

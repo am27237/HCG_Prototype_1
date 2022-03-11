@@ -6,20 +6,23 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject obstaclePrefab;
     SpriteRenderer greenObstacle;
-    [SerializeField] Transform target;
     [SerializeField] bool activateGreen = false;
     float nextSpawn;
+    [SerializeField] GameHandler gameHandler;
 
-    // Start is called before the first frame update
     void Start()
     {
         nextSpawn = Time.time;
         StartCoroutine(ActivateGreenRoutine());
+        gameHandler = gameHandler.GetComponent<GameHandler>();
     }
 
     private void Update()
     {
-        SpawnObstacle();
+        if (gameHandler.GetGameOn() == true)
+        {
+            SpawnObstacle();
+        }
     }
 
     void SpawnObstacle()
@@ -39,15 +42,11 @@ public class SpawnManager : MonoBehaviour
             else
             {
                 GreenObstacle();
-            }
-            Instantiate(obstaclePrefab, new Vector2(xPos, transform.position.y), Quaternion.identity);
-            nextSpawn = Time.time + spawnRate;
-
-            if (activateGreen == true)
-            {
                 activateGreen = false;
                 StartCoroutine(ActivateGreenRoutine());
             }
+            Instantiate(obstaclePrefab, new Vector2(xPos, transform.position.y), Quaternion.identity);
+            nextSpawn = Time.time + spawnRate;
         }
     }
 
