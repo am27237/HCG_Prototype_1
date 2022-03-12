@@ -10,10 +10,6 @@ public class Obstacle : MonoBehaviour
     private void OnEnable()
     {
         Invoke("DestroyMe", 3);
-    }
-
-    void Start()
-    {
         PlayerController target = GameObject.FindObjectOfType<PlayerController>();
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
@@ -21,7 +17,7 @@ public class Obstacle : MonoBehaviour
         {
             Vector2 moveDirection = (target.transform.position - transform.position).normalized * speed;
             rb.velocity = new Vector2(moveDirection.x, moveDirection.y);
-            
+
             //this picks a number between 1 and 2
             var rand = Random.Range(1, 3);
             if (rand == 1)
@@ -44,6 +40,11 @@ public class Obstacle : MonoBehaviour
 
     private void DestroyMe()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
     }
 }

@@ -29,10 +29,7 @@ public class GameHandler : MonoBehaviour
         game = isPlaying;
         if (game == false)
         {
-            gameOver.SetActive(true);
-            playAgain.SetActive(true);
-            quitGame.SetActive(true);
-            gameTitle.SetActive(true);
+            SetGameOver();
         }
     }
 
@@ -43,31 +40,38 @@ public class GameHandler : MonoBehaviour
 
     public void PlayGame()
     {
+        SetGameMode();
+    }
+
+    public void PlayAgain()
+    {
+        score.GetComponent<Score>().ResetScore();
+        SetGameMode();
+    }
+
+    void SetGameMode()
+    {
         game = true;
         spawnManager.SpawnPlayer();
         spawnManager.SpawnObstacle();
         gameOver.SetActive(false);
         playGame.SetActive(false);
+        playAgain.SetActive(false);
         quitGame.SetActive(false);
         gameTitle.SetActive(false);
     }
 
-    public void PlayAgain()
+    void SetGameOver()
     {
-        game = true;
-        spawnManager.SpawnPlayer();
-        spawnManager.SpawnObstacle();
-        score.GetComponent<Score>().ResetScore();
-        gameOver.SetActive(false);
-        playAgain.SetActive(false);
-        quitGame.SetActive(false);
-        gameTitle.SetActive(false);
+        gameOver.SetActive(true);
+        playAgain.SetActive(true);
+        quitGame.SetActive(true);
+        gameTitle.SetActive(true);
     }
 
     public void QuitGame()
     {
         Application.Quit();
         Debug.Log("Game Quit");
-
     }
 }

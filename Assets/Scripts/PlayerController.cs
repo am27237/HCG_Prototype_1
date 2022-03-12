@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         {
             score = FindObjectOfType<Score>();
             score.UpdateScore();
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
 
         // Inform game handler to stop the game and Destroy player and the obstacle collided
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
             gameHandler = FindObjectOfType<GameHandler>();
             gameHandler.GameIsPlaying(false);
             Destroy(gameObject);
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 }

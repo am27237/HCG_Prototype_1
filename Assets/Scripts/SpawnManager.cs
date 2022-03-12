@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] GameObject obstaclePrefab;
+    GameObject obstacle;
     [SerializeField] GameObject player;
-    SpriteRenderer greenObstacle;
+    SpriteRenderer obstacleColor;
     [SerializeField] bool activateGreen = false;
     float nextSpawn;
     [SerializeField] GameHandler gameHandler;
@@ -37,6 +37,8 @@ public class SpawnManager : MonoBehaviour
 
         if (Time.time > nextSpawn)
         {
+            obstacle = ObjectPool.SharedInstance.GetPooledObject();
+
             if (activateGreen == false)
             {
                 WhiteObstacle();
@@ -47,21 +49,27 @@ public class SpawnManager : MonoBehaviour
                 activateGreen = false;
                 StartCoroutine(ActivateGreenRoutine());
             }
-            Instantiate(obstaclePrefab, new Vector2(xPos, transform.position.y), Quaternion.identity);
+
+            if (obstacle != null)
+            {
+                obstacle.transform.position = new Vector2(xPos, transform.position.y);
+                obstacle.SetActive(true);
+            }
+
             nextSpawn = Time.time + spawnRate;
         }
     }
 
     void GreenObstacle()
     {
-        greenObstacle = obstaclePrefab.GetComponent<SpriteRenderer>();
-        greenObstacle.color = new Color(0,1,0,1);
+        obstacleColor = obstacle.GetComponent<SpriteRenderer>();
+        obstacleColor.color = new Color(0,1,0,1);
     }
 
     void WhiteObstacle()
     {
-        greenObstacle = obstaclePrefab.GetComponent<SpriteRenderer>();
-        greenObstacle.color = new Color(1, 1, 1, 1);
+        obstacleColor = obstacle.GetComponent<SpriteRenderer>();
+        obstacleColor.color = new Color(1, 1, 1, 1);
     }
 
     void ActivateGreenObstacle()
