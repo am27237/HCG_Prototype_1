@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         // If player and obstacle has the same color green then add score
         if (obstacleColor.color == playerColor.color)
         {
-            score = score.GetComponent<Score>();
+            score = FindObjectOfType<Score>();
             score.UpdateScore();
             Destroy(collision.gameObject);
         }
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         // Inform game handler to stop the game and Destroy player and the obstacle collided
         else
         {
-            gameHandler = gameHandler.GetComponent<GameHandler>();
+            gameHandler = FindObjectOfType<GameHandler>();
             gameHandler.GameIsPlaying(false);
             Destroy(gameObject);
             Destroy(collision.gameObject);

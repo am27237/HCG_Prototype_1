@@ -21,7 +21,17 @@ public class Obstacle : MonoBehaviour
         {
             Vector2 moveDirection = (target.transform.position - transform.position).normalized * speed;
             rb.velocity = new Vector2(moveDirection.x, moveDirection.y);
-            rotateRate = Random.Range(-1, 2);
+            
+            //this picks a number between 1 and 2
+            var rand = Random.Range(1, 3);
+            if (rand == 1)
+            {
+                rotateRate = -1;
+            }
+            else
+            {
+                rotateRate = 1;
+            }
         }
         else
             return;

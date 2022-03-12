@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject obstaclePrefab;
+    [SerializeField] GameObject player;
     SpriteRenderer greenObstacle;
     [SerializeField] bool activateGreen = false;
     float nextSpawn;
@@ -25,8 +26,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    void SpawnObstacle()
+    public void SpawnObstacle()
     {
+        
         // Spawn in random x-axis  
         float xPos = Random.Range(-2.3f, 2.3f);
 
@@ -72,5 +74,10 @@ public class SpawnManager : MonoBehaviour
         float randomRate = Random.Range(1f, 4f);
         yield return new WaitForSeconds(randomRate);
         ActivateGreenObstacle();
+    }
+
+    public void SpawnPlayer()
+    {
+        Instantiate(player, new Vector3(0, 0, 0), Quaternion.identity);
     }
 }

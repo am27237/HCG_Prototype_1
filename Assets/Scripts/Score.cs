@@ -16,12 +16,17 @@ public class Score : MonoBehaviour
 
     void Update()
     {
-        scoreUI.text = "Score: " + score.ToString();
+        scoreUI.text = score.ToString();
     }
 
     public void UpdateScore()
     {
         score = score + 1;
+    }
+
+    public void ResetScore()
+    {
+        score = 0;
     }
 
 }
